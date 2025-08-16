@@ -1,0 +1,17 @@
+services:
+  jekyll:
+    build: .
+    container_name: jekyll-jam
+    working_dir: /srv/jekyll
+    ports:
+      - "4000:4000"      # site
+      - "35729:35729"    # livereload
+    volumes:
+      - ./site:/srv/jekyll
+    command: >
+      jekyll serve
+      --livereload
+      --host 0.0.0.0
+      --port 4000
+      --drafts
+      --force_polling

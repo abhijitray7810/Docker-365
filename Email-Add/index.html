@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Storage Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f7f7f7;
+            /* Docker logo as background */
+            background-image: url('https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png');
+            background-repeat: no-repeat;
+            background-position: center top;
+            background-size: 200px auto;
+        }
+        .container {
+            background: #fff;
+            padding: 24px;
+            border-radius: 8px;
+            max-width: 350px;
+            margin: 120px auto 0 auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            background: #0078d4;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .saved-email {
+            margin-top: 16px;
+            color: #333;
+        }
+        ul {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Save Your Emails (up to 10)</h2>
+    <input type="email" id="emailInput" placeholder="Enter your email" required>
+    <button onclick="saveEmail()">Save</button>
+    <div class="saved-email" id="savedEmail"></div>
+</div>
+<script>
+    function saveEmail() {
+        const emailInput = document.getElementById('emailInput');
+        const email = emailInput.value.trim();
+        if (!email) return;
+
+        let emails = JSON.parse(localStorage.getItem('userEmails')) || [];
+        if (emails.length >= 10) {
+            alert('You can only save up to 10 emails.');
+            return;
+        }
+        if (emails.includes(email)) {
+            alert('This email is already saved.');
+            return;
+        }
+        emails.push(email);
+        localStorage.setItem('userEmails', JSON.stringify(emails));
+        emailInput.value = '';
+        displayEmail();
+    }
+
+    function displayEmail() {
+        const saved = JSON.parse(localStorage.getItem('userEmails')) || [];
+        const display = document.getElementById('savedEmail');
+        if (saved.length > 0) {
+            display.innerHTML = '<strong>Saved Emails:</strong><ul>' +
+                saved.map(e => `<li>${e}</li>`).join('') +
+                '</ul>';
+        } else {
+            display.textContent = '';
+        }
+    }
+
+    // Show saved emails on page load
+    window.onload = displayEmail;
+</script>
+</body>
+</html>

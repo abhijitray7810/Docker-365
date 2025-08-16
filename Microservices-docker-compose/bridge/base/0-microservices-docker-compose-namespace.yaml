@@ -1,0 +1,8 @@
+#! 0-microservices-docker-compose-namespace.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: microservices-docker-compose
+    labels:
+        com.docker.compose.project: microservices-docker-compose

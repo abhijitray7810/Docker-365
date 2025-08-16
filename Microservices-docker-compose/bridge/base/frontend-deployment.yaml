@@ -1,0 +1,35 @@
+#! frontend-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: frontend
+    namespace: microservices-docker-compose
+    labels:
+        com.docker.compose.project: microservices-docker-compose
+        com.docker.compose.service: frontend
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: microservices-docker-compose
+            com.docker.compose.service: frontend
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: microservices-docker-compose
+                com.docker.compose.service: frontend
+                com.docker.compose.network.app-network: "true"
+        spec:
+            containers:
+                - name: frontend
+                  image: microservices-docker-compose-frontend
+                  imagePullPolicy: IfNotPresent
+                  env:
+                    - name: REACT_APP_API_URL
+                      value: "http://localhost:5000"
+                  ports:
+                    - name: frontend-80
+                      containerPort: 80
